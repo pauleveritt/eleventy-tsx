@@ -37,7 +37,7 @@ flips the switch:
   },
 ```
 
-We add a minimal `eleventy.config.js` file at that top. See: this is already ESM, no more `module.exports`!
+We add a minimal `eleventy.config.ts` file at that top. See: this is already ESM, no more `module.exports`!
 
 ```javascript
 export default function (eleventyConfig) {
@@ -48,4 +48,94 @@ export default function (eleventyConfig) {
     },
   };
 }
+```
+
+## 2. Switch to TypeScript
+
+We have two `.js` files. Maybe you like TypeScript? Let's switch this project to `.ts`. _We'll leave TSX for the next
+step._
+
+First, of course, add the magical bag of mystery known as the `tsconfig.json` file. I hope this is right. I always just
+cut, paste, and pray.
+
+```json
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "Node",
+    "outDir": "dist",
+    "rootDir": ".",
+    "strict": false,
+    "jsx": "react-jsx",
+    "jsxImportSource": "jsx-async-runtime"
+  },
+  "exclude": ["node_modules", "dist"]
+}
+```
+
+Next, let's install the [tsx](https://github.com/privatenumber/tsx) package which makes a nice wrapper
+around [esbuild TypeScript](https://esbuild.github.io/content-types/#typescript), the real star of the show.
+
+We'll also change our `build` script to use `tsx`"
+
+```
+  "scripts": {
+    "build": "tsx node_modules/@11ty/eleventy/cmd.cjs --config=eleventy.config.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0"
+  }
+```
+
+Yes, your eyes didn't deceive you -- let's rename our config file to `eleventy.config.ts` and sprinkle in some
+TypeScript syntax. 4 characters of syntax (`: any`) to be precise.
+
+```typescript
+export default function (eleventyConfig: any) {
+  return {
+    dir: {
+      input: "src",
+      output: "dist",
+    },
+  };
+}
+```
+
+We also rename our template to `src/index.11ty.ts` and a return type:
+
+```typescript
+export function render(): string {
+  return "<h1>Hello ESM</h1>";
+}
+```
+
+We run our build and...wump wump:
+
+```
+[11ty] Wrote 0 files in 0.01 seconds (v3.0.0-alpha.4)
+```
+
+We need to return to `eleventy.config.ts` and teach it about `.ts` files. We'll go ahead and teach about `.tsx` as well.
+
+```typescript
+export default function (eleventyConfig: any) {
+  eleventyConfig.addExtension(["11ty.jsx", "11ty.ts", "11ty.tsx"], {
+    key: "11ty.js",
+  });
+
+  return {
+    dir: {
+      input: "src",
+      output: "dist",
+    },
+  };
+}
+```
+
+This time when we build -- success!
+
+```
+[11ty] Writing dist/index.html from ./src/index.11ty.ts
+[11ty] Wrote 1 file in 0.02 seconds (v3.0.0-alpha.4)
 ```
