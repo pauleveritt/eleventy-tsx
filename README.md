@@ -214,7 +214,8 @@ import h, { JSX } from "vhtml";
 
 This was annoying. Not the least of which: `h` wasn't even used in the file and showed up as an unused import.
 
-If we try to build now, it will...fail. 11ty templates are supposed to return a string, not a JSX element. Let's fix that in `elevent.config.ts`:
+If we try to build now, it will...fail. 11ty templates are supposed to return a string, not a JSX element. Let's fix
+that in `elevent.config.ts`:
 
 ```typescript
 import { renderToString } from "jsx-async-runtime";
@@ -250,3 +251,48 @@ To recap what we did here:
 - Add JSX handling to tsconfig.json
 - Changed our one page/template to TSX
 - Taught 11ty to render `.tsx` templates from `JSX.Element` to a string
+
+## Step 4: Testing with Vitest
+
+We now have TypeScript for Eleventy with TSX as a template language. This lets us use component-driven development in
+11ty.
+
+For example, we can work on small chunks -- in isolation -- and work happily in tests, using Vitest. We'll start by
+adding a dependency and a script:
+
+```
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^1.1.3",
+  }
+```
+
+Let's rewrite `index.11ty.tsx` to have a named component, which we then re-export for Eleventy's `render` protocol:
+
+```typescript jsx
+export function Index(): JSX.Element {
+  return <h1>Hello TSX</h1>;
+}
+
+export const render = Index;
+```
+
+Now we can write a test of the `Index` component, using Vitest:
+
+```typescript jsx
+import { expect, test } from "vitest";
+import { renderToString } from "jsx-async-runtime";
+import { Index } from "./index.11ty";
+
+test("render index", async () => {
+  const result = <Index />;
+  const rendered = await renderToString(result);
+  expect(rendered).toBeTruthy();
+});
+```
+
+## Step 5: DOM Testing with `Happy DOM`
+
+## Step 6: Async Components
