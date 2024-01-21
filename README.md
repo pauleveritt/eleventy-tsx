@@ -399,42 +399,42 @@ With this in place, let's make `components/Heading.tsx` (note that it didn't nee
 
 ```typescript jsx
 export type HeadingProps = {
-  name?: string;
+    name?: string;
 };
 
-export function Heading({ name = "TSX" }: HeadingProps): JSX.Element {
-  return <h1>Hello {name}</h1>;
+export function Heading({name = "TSX"}: HeadingProps): JSX.Element {
+    return <h1>Hello {name}</h1>;
 }
 ```
 
 We can test the default and passed-value cases in `components/Heading.test.tsx`:
 
 ```typescript jsx
-import { expect, test } from "vitest";
-import { renderToString } from "jsx-async-runtime";
-import { screen } from "@testing-library/dom";
-import { Heading } from "./Heading";
+import {expect, test} from "vitest";
+import {renderToString} from "jsx-async-runtime";
+import {screen} from "@testing-library/dom";
+import {Heading} from "./Heading";
 
 test("render heading with default name", async () => {
-  const result = <Heading />;
-  document.body.innerHTML = await renderToString(result);
-  expect(screen.getByText("Hello TSX")).to.exist;
+    const result = <Heading/>;
+    document.body.innerHTML = await renderToString(result);
+    expect(screen.getByText("Hello TSX")).to.exist;
 });
 
 test("render heading with custom name", async () => {
-  const result = <Heading name={`World`} />;
-  document.body.innerHTML = await renderToString(result);
-  expect(screen.getByText("Hello World")).to.exist;
+    const result = <Heading name={`World`}/>;
+    document.body.innerHTML = await renderToString(result);
+    expect(screen.getByText("Hello World")).to.exist;
 });
 ```
 
 Now, let's go back to our 11ty template and point it at a component:
 
 ```typescript jsx
-import { Heading } from "../components/Heading";
+import {Heading} from "../components/Heading";
 
 export function Index(): JSX.Element {
-  return <Heading />;
+    return <Heading/>;
 }
 
 export const render = Index;
@@ -444,7 +444,86 @@ Tests all pass, the page still builds the same. All good.
 
 ## Step 7: 11ty Views
 
+We're doing TSX for our `index.11ty.tsx` 11ty template. But it doesn't really feel like a component, per-se. It feels
+more like a view. It mediates between incoming 11ty data and the logic for that "page".
+
+Let's change `index.11ty.tsx` to be a "view":
+
+- The `render` function grabs the 11ty-specific stuff
+- A component for that page receives that stuff and renders
+
+Why this split? Testing! It's not that fun mediating with the (untyped) 11ty
+
+We'll start with some pseudo-typing for 11ty. Make a file `eleventy.ts` at the root:
+
+```typescript
+export type ViewProps = {
+  page: {
+    filePathStem: string;
+  };
+};
+```
+
+11ty has a _lot_ more than this. Your site might have even more (custom collections, etc.) We'll keep it simple for now.
+
+We'll change our index page at `site/index.11ty.tsx` to have a `render` function which does the mediation:
+
+```typescript jsx
+import {Heading} from "../components/Heading";
+import {ViewProps} from "../eleventy";
+
+export type IndexProps = {
+    filePathStem: string;
+};
+
+export function Index({filePathStem}: IndexProps): JSX.Element {
+    return <Heading name={filePathStem}/>;
+}
+
+export function render({page}: ViewProps): JSX.Element {
+    return <Index filePathStem={page.filePathStem}/>;
+}
+```
+
+As you can see, the `render` function does little more than pass the massaged-data from 11ty into the component you're
+really interested in: this page. That is, the `Index` component.
+
+Our tests in `index.test.tsx` can then model this. You first focus on writing something that gets passed in specific
+data, using tests to be more productive. Then, when done, write a test for the render function, which needs the 11ty
+data. We can see that split here:
+
+```typescript jsx
+import {expect, test} from "vitest";
+import {renderToString} from "jsx-async-runtime";
+import {render, Index} from "./index.11ty";
+import {screen} from "@testing-library/dom";
+import {ViewProps} from "../eleventy";
+
+test("renders Index component", async () => {
+    const result = renderToString(<Index filePathStem="/index"/>);
+    document.body.innerHTML = await renderToString(result);
+    expect(screen.getByText(`Hello /index`)).to.exist;
+});
+test("render index view", async () => {
+    const viewProps: ViewProps = {
+        page: {filePathStem: "/index"},
+    };
+    // Let's do this as a call, rather than TSX, to remind
+    // ourselves that this is a view, not a "component".
+    const result = render(viewProps);
+    document.body.innerHTML = await renderToString(result);
+    expect(screen.getByText(`Hello /index`)).to.exist;
+});
+```
+
+When your view needs lots of data from across parts of the 11ty surface area, this split becomes more convenient.
+
+Moreso, when you have a chain of layouts to format Markdown data, this mediation is more important.
+
 ## Step 8: Layouts
+
+Right now our 11ty "page" is a JS render function. But most people use `site/index.md` with frontmatter that points to
+a "layout". Let's do that in this step.
 
 ## Step 9: Testing Eleventy Builds
 
