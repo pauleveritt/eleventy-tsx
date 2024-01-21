@@ -65,7 +65,6 @@ cut, paste, and pray.
     "target": "ESNext",
     "moduleResolution": "Node",
     "outDir": "dist",
-    "rootDir": ".",
     "strict": false,
     "jsx": "react-jsx",
     "jsxImportSource": "jsx-async-runtime"
@@ -177,7 +176,6 @@ you can infer from `tsconfig.json`, which we'll do:
     "target": "ESNext",
     "moduleResolution": "Node",
     "outDir": "dist",
-    "rootDir": ".",
     "strict": false,
     "jsx": "react-jsx",
     "jsxImportSource": "jsx-async-runtime"
@@ -282,7 +280,7 @@ export default defineConfig({
     jsxImportSource: "jsx-async-runtime",
   },
   test: {
-    include: ["./src/**/*.test.tsx"],
+    include: ["./site/**/*.test.tsx"],
   },
 });
 ```
@@ -350,16 +348,104 @@ export default defineConfig({
 Our `index.test.tsx` file can now do a real DOM with the Testing Library approach to assertions:
 
 ```typescript jsx
-import { expect, test } from "vitest";
-import { renderToString } from "jsx-async-runtime";
-import { Index } from "./index.11ty";
-import { screen } from "@testing-library/dom";
+import {expect, test} from "vitest";
+import {renderToString} from "jsx-async-runtime";
+import {Index} from "./index.11ty";
+import {screen} from "@testing-library/dom";
 
 test("render index", async () => {
-  const result = <Index />;
+    const result = <Index/>;
+    document.body.innerHTML = await renderToString(result);
+    expect(screen.getByText("Hello TSX")).to.exist;
+});
+```
+
+## Step 6: Components With Props
+
+Our site is currently one "component". And that component is more like a "view." Let's start that split by making
+a `Heading` component that can get passed a prop for who to say hello to.
+
+Let's say our site content will be in `site` and our software components in `components`:
+
+```bash
+$ mv src site
+```
+
+Our `vitest.config.js` file needs to be pointed at our two directories:
+
+```
+    include: ["./site/**/*.test.tsx", "./components/**/*.test.tsx"],
+```
+
+We should do something similar in `tsconfig.json`:
+
+```
+  "include": ["site", "components"],
+  "exclude": ["node_modules", "dist"]
+```
+
+We also need 11ty to find its content in `site` instead of `src`:
+
+```
+  return {
+    dir: {
+      input: "site",
+      output: "dist",
+    },
+  };
+```
+
+With this in place, let's make `components/Heading.tsx` (note that it didn't need the `.11ty` in the filename):
+
+```typescript jsx
+export type HeadingProps = {
+  name?: string;
+};
+
+export function Heading({ name = "TSX" }: HeadingProps): JSX.Element {
+  return <h1>Hello {name}</h1>;
+}
+```
+
+We can test the default and passed-value cases in `components/Heading.test.tsx`:
+
+```typescript jsx
+import { expect, test } from "vitest";
+import { renderToString } from "jsx-async-runtime";
+import { screen } from "@testing-library/dom";
+import { Heading } from "./Heading";
+
+test("render heading with default name", async () => {
+  const result = <Heading />;
   document.body.innerHTML = await renderToString(result);
   expect(screen.getByText("Hello TSX")).to.exist;
 });
+
+test("render heading with custom name", async () => {
+  const result = <Heading name={`World`} />;
+  document.body.innerHTML = await renderToString(result);
+  expect(screen.getByText("Hello World")).to.exist;
+});
 ```
+
+Now, let's go back to our 11ty template and point it at a component:
+
+```typescript jsx
+import { Heading } from "../components/Heading";
+
+export function Index(): JSX.Element {
+  return <Heading />;
+}
+
+export const render = Index;
+```
+
+Tests all pass, the page still builds the same. All good.
+
+## Step 7: 11ty Views
+
+## Step 8: Layouts
+
+## Step 9: Testing Eleventy Builds
 
 ## Step 999: Async Components

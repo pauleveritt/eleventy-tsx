@@ -12,7 +12,7 @@ export default function (eleventyConfig: any) {
 
   return {
     dir: {
-      input: "src",
+      input: "site",
       output: "dist",
     },
   };

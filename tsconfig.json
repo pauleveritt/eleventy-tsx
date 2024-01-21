@@ -4,10 +4,10 @@
     "target": "ESNext",
     "moduleResolution": "Node",
     "outDir": "dist",
-    "rootDir": "src",
     "strict": false,
     "jsx": "react-jsx",
     "jsxImportSource": "jsx-async-runtime"
   },
+  "include": ["site", "components"],
   "exclude": ["node_modules", "dist"]
 }
