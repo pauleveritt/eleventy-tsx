@@ -1,9 +1,10 @@
 import { expect, test } from "vitest";
 import { renderToString } from "jsx-async-runtime";
 import { Index } from "./index.11ty";
+import { screen } from "@testing-library/dom";
 
 test("render index", async () => {
   const result = <Index />;
-  const rendered = await renderToString(result);
-  expect(rendered).toEqual("<h1>Hello TSX</h1>");
+  document.body.innerHTML = await renderToString(result);
+  expect(screen.getByText("Hello TSX")).to.exist;
 });

@@ -8,6 +8,7 @@ export default defineConfig({
     jsxImportSource: "jsx-async-runtime",
   },
   test: {
+    environment: "happy-dom",
     include: ["./src/**/*.test.tsx"],
   },
 });

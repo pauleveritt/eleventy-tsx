@@ -328,8 +328,38 @@ Our test right now asserts a string. We're going to want richer testing. Let's h
 up [Happy DOM](https://github.com/capricorn86/happy-dom) as a fake web browser
 and [Testing Library](https://testing-library.com) for role-based assertions.
 
-First, over to
+First, over to `package.json` to add some dependencies:
 
-- Add happy-dom to dependencies
+```
+"devDependencies": {
+  "happy-dom": "^13.0.0",
+  "@testing-library/dom": "^9.3.4",
+},
+```
 
-## Step 6: Async Components
+Our `vitest.config.js` file needs to be told to use Happy DOM as the global `document`:
+
+```javascript
+export default defineConfig({
+  test: {
+    environment: "happy-dom",
+  },
+});
+```
+
+Our `index.test.tsx` file can now do a real DOM with the Testing Library approach to assertions:
+
+```typescript jsx
+import { expect, test } from "vitest";
+import { renderToString } from "jsx-async-runtime";
+import { Index } from "./index.11ty";
+import { screen } from "@testing-library/dom";
+
+test("render index", async () => {
+  const result = <Index />;
+  document.body.innerHTML = await renderToString(result);
+  expect(screen.getByText("Hello TSX")).to.exist;
+});
+```
+
+## Step 999: Async Components
