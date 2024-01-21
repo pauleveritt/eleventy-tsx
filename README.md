@@ -269,11 +269,35 @@ adding a dependency and a script:
   }
 ```
 
-Let's rewrite `index.11ty.tsx` to have a named component, which we then re-export for Eleventy's `render` protocol:
+We need to wire up Vitest in a `vitest.config.js` file at the root:
+
+```javascript
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({
+  esbuild: {
+    jsx: "transform",
+    jsxInject: "import { jsx } from 'jsx-async-runtime/jsx-runtime'",
+    jsxFactory: "jsx",
+    jsxImportSource: "jsx-async-runtime",
+  },
+  test: {
+    include: ["./src/**/*.test.tsx"],
+  },
+});
+```
+
+This overrides the same settings used by `tsx` for running Eleventy builds. Vitest uses `esbuild` (as does `tsx`) but
+for whatever reason, didn't respect the `tsconfig.json` settings without help. Big shoutout
+to [Joaquín Sánchez](https://github.com/userquin) from Vite/Vitest fame
+for [figuring this out for me](https://github.com/privatenumber/tsx/discussions/453#discussioncomment-8194275).
+
+Next, let's rewrite `index.11ty.tsx` to have a named-export component, which we then re-export for Eleventy's `render`
+protocol for templates. This is for convenience, so you don't have all of your components named `render`:
 
 ```typescript jsx
 export function Index(): JSX.Element {
-  return <h1>Hello TSX</h1>;
+    return <h1>Hello TSX</h1>;
 }
 
 export const render = Index;
@@ -282,17 +306,30 @@ export const render = Index;
 Now we can write a test of the `Index` component, using Vitest:
 
 ```typescript jsx
-import { expect, test } from "vitest";
-import { renderToString } from "jsx-async-runtime";
-import { Index } from "./index.11ty";
+import {expect, test} from "vitest";
+import {renderToString} from "jsx-async-runtime";
+import {Index} from "./index.11ty";
 
 test("render index", async () => {
-  const result = <Index />;
-  const rendered = await renderToString(result);
-  expect(rendered).toBeTruthy();
+    const result = <Index/>;
+    const rendered = await renderToString(result);
+    expect(rendered).toEqual("<h1>Hello TSX</h1>");
 });
 ```
 
-## Step 5: DOM Testing with `Happy DOM`
+This test passes when we run `npm test`.
+
+## Step 5: DOM Testing with `Happy DOM` and `Testing Library`
+
+We're in great shape. We now 11ty development using tooling-friendly TS and TSX, for those that prefer such things. We
+also have testing with the super-cool Vitest.
+
+Our test right now asserts a string. We're going to want richer testing. Let's hook
+up [Happy DOM](https://github.com/capricorn86/happy-dom) as a fake web browser
+and [Testing Library](https://testing-library.com) for role-based assertions.
+
+First, over to
+
+- Add happy-dom to dependencies
 
 ## Step 6: Async Components

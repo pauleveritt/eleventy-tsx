@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Demo of Eleventy 3, ESM, and TS/TSX",
   "scripts": {
+    "start": "tsx node_modules/@11ty/eleventy/cmd.cjs --config=eleventy.config.ts --serve --incremental",
     "build": "tsx node_modules/@11ty/eleventy/cmd.cjs --config=eleventy.config.ts",
     "test": "vitest run"
   },
@@ -15,10 +16,10 @@
     "jsx-async-runtime": "^0.1.3"
   },
   "devDependencies": {
-    "vitest": "^1.1.3",
     "happy-dom": "^13.0.0",
     "prettier": "^3.1.1",
-    "tsx": "^4.7.0"
+    "tsx": "^4.7.0",
+    "vitest": "^1.1.3"
   },
   "volta": {
     "node": "20.10.0",
