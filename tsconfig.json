@@ -8,6 +8,6 @@
     "jsx": "react-jsx",
     "jsxImportSource": "jsx-async-runtime"
   },
-  "include": ["site", "components"],
+  "include": ["site", "components", "_layouts"],
   "exclude": ["node_modules", "dist"]
 }

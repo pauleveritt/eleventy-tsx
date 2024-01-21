@@ -13,6 +13,7 @@ export default function (eleventyConfig: any) {
   return {
     dir: {
       input: "site",
+      layouts: "../_layouts",
       output: "dist",
     },
   };
