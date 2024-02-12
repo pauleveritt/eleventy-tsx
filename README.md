@@ -646,4 +646,10 @@ more could we want?
 
 ## Step 9: Testing Eleventy Builds
 
+I luvs me this style of development. Others though -- just want to see 11ty build. Faking out 11ty doesn't fit their
+brain. They want the equivalent of E2E tests.
+
+People usually reach for Playwright or Cyprus in these cases. But that severs us from some of this Node-based,
+IDE-friendly tooling. Any chance we can actually run 11ty, but in a way that feels like a unit test?
+
 ## Step 999: Async Components

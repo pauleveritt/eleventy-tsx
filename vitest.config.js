@@ -10,6 +10,7 @@ export default defineConfig({
   test: {
     environment: "happy-dom",
     include: [
+      "./eleventy.config.ts",
       "./site/**/*.test.tsx",
       "./components/**/*.test.tsx",
       "./_layouts/**/*.test.tsx",
