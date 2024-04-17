@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { renderToString } from "jsx-async-runtime";
-import { render } from "./MainLayout.11ty";
+import { MainLayout } from "./MainLayout.11ty";
 import { screen } from "@testing-library/dom";
 import { ViewProps } from "../eleventy";
 
@@ -9,7 +9,7 @@ test("render MainLayout", async () => {
     content: "<p>This is <em>the body</em></p>",
     title: "My Site",
   };
-  const result = render(viewProps);
+  const result = MainLayout(viewProps);
   document.body.innerHTML = await renderToString(result);
   expect(screen.getByText(`Hello My Site`)).to.exist;
   expect(screen.getByText(`the body`)).to.exist;

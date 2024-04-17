@@ -1,7 +1,7 @@
-import { Heading } from "../components/Heading";
 import { ViewProps } from "../eleventy";
+import { Heading } from "../components/Heading";
 
-export function render({ content, title }: ViewProps): JSX.Element {
+export function MainLayout({ content, title }: ViewProps): JSX.Element {
   return (
     <html lang="en">
       <head>
@@ -14,3 +14,5 @@ export function render({ content, title }: ViewProps): JSX.Element {
     </html>
   );
 }
+
+export const render = MainLayout;
