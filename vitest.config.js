@@ -9,11 +9,13 @@ export default defineConfig({
   },
   test: {
     environment: "happy-dom",
+    testTimeout: 15000,
     include: [
       // "./eleventy.config.ts",
       "./site/**/*.test.tsx",
       "./components/**/*.test.tsx",
       "./_layouts/**/*.test.tsx",
+      "./tests/site.test.ts",
     ],
   },
 });

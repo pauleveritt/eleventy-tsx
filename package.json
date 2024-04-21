@@ -5,7 +5,8 @@
   "scripts": {
     "start": "tsx node_modules/@11ty/eleventy/cmd.cjs --config=eleventy.config.ts --serve --incremental",
     "build": "tsx node_modules/@11ty/eleventy/cmd.cjs --config=eleventy.config.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test2": "tsx ./node_modules/.bin/vitest run"
   },
   "keywords": [],
   "author": "Paul Everitt <pauleveritt@me.com>",

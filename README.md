@@ -37,7 +37,7 @@ flips the switch:
   },
 ```
 
-We add a minimal `eleventy.config.ts` file at that top. See: this is already ESM, no more `module.exports`!
+We add a minimal `eleventy.config.js` file at that top. See: this is already ESM, no more `module.exports`!
 
 ```javascript
 export default function (eleventyConfig) {
