@@ -1,6 +1,5 @@
 import { expect, test } from "vitest";
 import Eleventy from "@11ty/eleventy";
-import EleventyConfig from "@11ty/eleventy/src/TemplateConfig";
 import { renderToString } from "jsx-async-runtime";
 
 // test("should load another Eleventy site", async () => {
