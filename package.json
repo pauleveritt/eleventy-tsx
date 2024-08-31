@@ -1,27 +1,26 @@
 {
   "name": "eleventy-tsx",
   "version": "1.0.0",
-  "description": "Demo of Eleventy 3, ESM, and TS/TSX",
+  "description": "Demo of Eleventy 3, ESM, TS/TSX, and jsx-async-runtime",
   "scripts": {
-    "start": "tsx node_modules/@11ty/eleventy/cmd.cjs --config=eleventy.config.ts --serve --incremental",
-    "build": "tsx node_modules/@11ty/eleventy/cmd.cjs --config=eleventy.config.ts",
-    "test": "vitest run",
-    "test2": "tsx ./node_modules/.bin/vitest run"
+    "start": "npx @11ty/eleventy --serve --incremental",
+    "build": "npx @11ty/eleventy",
+    "test": "vitest run"
   },
-  "keywords": [],
+  "keywords": [
+    "eleventy-plugin"
+  ],
   "author": "Paul Everitt <pauleveritt@me.com>",
   "license": "ISC",
   "type": "module",
-  "dependencies": {
-    "@11ty/eleventy": "^3.0.0-alpha.6",
-    "jsx-async-runtime": "^0.1.8"
-  },
   "devDependencies": {
-    "happy-dom": "^14.7.1",
-    "prettier": "^3.2.5",
-    "@testing-library/dom": "^10.0.0",
-    "tsx": "^4.7.2",
-    "vitest": "^1.5.0"
+    "@11ty/eleventy": "^3.0.0-beta.1",
+    "jsx-async-runtime": "^0.5.0",
+    "happy-dom": "^15.7.2",
+    "prettier": "^3.3.3",
+    "@testing-library/dom": "^10.4.0",
+    "tsx": "^4.19.0",
+    "vitest": "^2.0.5"
   },
   "volta": {
     "node": "20.10.0",
