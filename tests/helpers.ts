@@ -1,4 +1,5 @@
 import Eleventy from "@11ty/eleventy";
+import { jsxToString } from "jsx-async-runtime";
 
 type MappingValue = {
   url: string;
@@ -38,4 +39,9 @@ export async function getPages(configPath: string): Promise<{
     return document.head;
   };
   return { getBody, getHead };
+}
+
+export async function getBody(jsx: JSX.Element): Promise<HTMLElement> {
+  document.body.innerHTML = await jsxToString(jsx);
+  return document.body;
 }
