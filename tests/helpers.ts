@@ -8,23 +8,34 @@ type Mapping = {
   [index: string]: string;
 };
 
-export type SetDocument = (path: string) => void;
+export type GetPath = {
+  (path: string): HTMLElement;
+};
 
-export async function getPages(stubConfig: string) {
+export async function getPages(configPath: string): Promise<{
+  getBody: GetPath;
+  getHead: GetPath;
+}> {
   // Given a path to a stub 11ty config file, run
   // 11ty and convert the JSON results to a mapping where
   // each key extracts the HTML string.
   const pages: Mapping = {};
   const elev = new Eleventy(null, null, {
-    configPath: "tests/stubs/general/eleventy.config.js",
+    configPath,
   });
 
   // Make a mapping of path to HTML result
   const items = await elev.toJSON();
   items.forEach((value: MappingValue) => (pages[value.url] = value.content));
-  return (path: string) => {
-    // Change the document content to the HTML string from
-    // the results at the path
-    document.write(pages["/"]);
+  // Use the closure to provide functions that can make a document
+  // from a result path
+  const getBody = (path: string): HTMLElement => {
+    document.write(pages[path]);
+    return document.body;
   };
+  const getHead = (path: string): HTMLElement => {
+    document.write(pages[path]);
+    return document.head;
+  };
+  return { getBody, getHead };
 }

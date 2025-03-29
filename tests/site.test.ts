@@ -1,14 +1,18 @@
 import { beforeAll, expect, test } from "vitest";
-import { getByText } from "@testing-library/dom";
-import { getPages, SetDocument } from "./helpers";
+import { getByRole, getByText } from "@testing-library/dom";
+import { getPages, GetPath } from "./helpers";
 
-let setDocument: SetDocument;
+let getBody: GetPath;
 
 beforeAll(async () => {
-  setDocument = await getPages("tests/stubs/general/eleventy.config.js");
+  const results = await getPages("tests/stubs/general/eleventy.config.js");
+  getBody = results.getBody;
 });
 
 test("New Happy-DOM and parsing", () => {
-  setDocument("/");
-  expect(getByText(document.body, "The home page.")).toBeDefined;
+  const body = getBody("/");
+  expect(getByRole(body, "heading").textContent).toEqual(
+    "Hello The Index Page",
+  );
+  expect(getByText(body, "The home page.")).toBeDefined;
 });
