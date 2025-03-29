@@ -1,14 +1,11 @@
 import { defineConfig } from "vitest/config";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  esbuild: {
-    jsx: "transform",
-    jsxInject: "import { jsx } from 'jsx-async-runtime/jsx-runtime'",
-    jsxFactory: "jsx",
-    jsxImportSource: "jsx-async-runtime",
-  },
+  plugins: [tsconfigPaths()],
   test: {
     environment: "happy-dom",
+    forceRerunTriggers: ["./{components,tests/stubs}/**/*"],
     include: [
       "./components/**/*.test.{ts,tsx}",
       "./_layouts/**/*.test.{ts,tsx}",

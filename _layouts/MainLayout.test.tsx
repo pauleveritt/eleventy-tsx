@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { jsxToString } from "jsx-async-runtime";
 import { MainLayout } from "./MainLayout.11ty";
-import { screen } from "@testing-library/dom";
+import { getByText } from "@testing-library/dom";
 import { ViewProps } from "../src/eleventy";
 
 test("render MainLayout", async () => {
@@ -11,6 +11,6 @@ test("render MainLayout", async () => {
   };
   const result = MainLayout(viewProps);
   document.body.innerHTML = await jsxToString(result);
-  expect(screen.getByText(`Hello My Site`)).to.exist;
-  expect(screen.getByText(`the body`)).to.exist;
+  expect(getByText(document.body, `Hello My Site`)).to.exist;
+  expect(getByText(document.body, `the body`)).to.exist;
 });

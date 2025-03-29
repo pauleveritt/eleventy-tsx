@@ -1,5 +1,5 @@
 import { ViewProps } from "../src/eleventy";
-import { Heading } from "../components/Heading";
+import { Heading } from "@components/Heading";
 
 export function MainLayout({ content, title }: ViewProps): JSX.Element {
   return (

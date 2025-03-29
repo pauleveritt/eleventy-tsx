@@ -4,9 +4,12 @@
     "jsxImportSource": "jsx-async-runtime",
     "module": "ESNext",
     "moduleResolution": "Node",
+    "paths": {
+      "@components/*": ["./components/*"]
+    },
     "skipLibCheck": true,
     "target": "ESNext"
   },
-  "include": ["_layouts", "components", "site", "src", "tests"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["_layouts", "components", "site", "tests"],
+  "exclude": ["node_modules", "_site"]
 }
