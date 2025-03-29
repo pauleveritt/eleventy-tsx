@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Demo of Eleventy 3, ESM, TS/TSX, jsx-async-runtime, and testing",
   "scripts": {
-    "start": "npx @11ty/eleventy --serve --incremental",
-    "build": "npx @11ty/eleventy",
+    "start": "tsx node_modules/@11ty/eleventy/cmd.cjs --config=eleventy.config.ts --serve --incremental",
+    "build": "tsx node_modules/@11ty/eleventy/cmd.cjs --config=eleventy.config.ts",
     "test": "vitest run"
   },
   "keywords": [],
