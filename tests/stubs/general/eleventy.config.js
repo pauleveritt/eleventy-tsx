@@ -18,7 +18,7 @@ export default async function (eleventyConfig) {
     dir: {
       input: "tests/stubs/general/",
       layouts: "../../../_layouts/",
-      output: "tests/stubs/general/dist",
+      output: "tests/stubs/general/_site",
     },
   };
 }
