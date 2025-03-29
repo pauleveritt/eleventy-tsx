@@ -10,11 +10,7 @@ export default defineConfig({
   test: {
     environment: "happy-dom",
     forceRerunTriggers: ["./{components,tests/stubs}/**/*"],
-    include: [
-      "./components/**/*.test.{ts,tsx}",
-      "./_layouts/**/*.test.{ts,tsx}",
-      "./tests/*.test.{ts,tsx}",
-    ],
+    include: ["./{_layouts,site,src,components,tests}/**/*.test.{ts,tsx}"],
     isolate: false,
     setupFiles: ["./setup.vitest.ts"],
     testTimeout: 15000,
