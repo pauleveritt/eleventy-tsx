@@ -5,9 +5,9 @@ export default async function (eleventyConfig) {
   await eleventySetup(eleventyConfig);
   return {
     dir: {
-      input: "tests/stubs/general/",
+      input: "tests/stubs/simplest/",
       layouts: "../../../_layouts/",
-      output: "tests/stubs/general/_site",
+      output: "tests/stubs/simplest/_site",
     },
   };
 }

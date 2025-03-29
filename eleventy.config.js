@@ -17,8 +17,8 @@ export async function eleventySetup(eleventyConfig) {
 
   return {
     dir: {
-      input: "tests/stubs/general/",
-      layouts: "../../../_layouts/",
+      input: "site",
+      layouts: "../_layouts",
     },
   };
 }

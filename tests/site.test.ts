@@ -5,7 +5,7 @@ import { getPages, GetPath } from "../src/helpers";
 let getBody: GetPath;
 
 beforeAll(async () => {
-  const results = await getPages("tests/stubs/general/eleventy.config.js");
+  const results = await getPages("tests/stubs/simplest/eleventy.config.js");
   getBody = results.getBody;
 });
 
