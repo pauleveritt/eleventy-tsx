@@ -1,6 +1,6 @@
 import { beforeAll, expect, test } from "vitest";
 import { getByRole, getByText } from "@testing-library/dom";
-import { getPages, GetPath } from "./helpers";
+import { getPages, GetPath } from "../src/helpers";
 
 let getBody: GetPath;
 

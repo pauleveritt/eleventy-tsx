@@ -20,7 +20,6 @@
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
     "vite": "^6.2.3",
-    "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.0.9"
   },
   "volta": {
