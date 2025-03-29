@@ -1,19 +1,8 @@
 import "tsx/esm";
-import { jsxToString } from "jsx-async-runtime";
+import eleventySetup from "../../../eleventy.config.js";
 
 export default async function (eleventyConfig) {
-  eleventyConfig.addExtension(["11ty.jsx", "11ty.ts", "11ty.tsx"], {
-    key: "11ty.js",
-    compile: function () {
-      return async function (data) {
-        const content = await this.defaultRenderer(data);
-        return await jsxToString(content);
-      };
-    },
-  });
-
-  eleventyConfig.addTemplateFormats("11ty.ts,11ty.tsx");
-
+  await eleventySetup(eleventyConfig);
   return {
     dir: {
       input: "tests/stubs/general/",

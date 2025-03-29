@@ -1,7 +1,6 @@
-import "tsx/esm";
 import { jsxToString } from "jsx-async-runtime";
 
-export default function (eleventyConfig: any) {
+export function eleventySetup(eleventyConfig) {
   // Set up JSX/TSX as a template language
   eleventyConfig.addExtension(["11ty.jsx", "11ty.ts", "11ty.tsx"], {
     key: "11ty.js",
@@ -22,3 +21,5 @@ export default function (eleventyConfig: any) {
     },
   };
 }
+
+export default eleventySetup;
