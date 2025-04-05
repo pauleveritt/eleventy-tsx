@@ -14,6 +14,7 @@ export async function eleventySetup(eleventyConfig) {
   });
 
   eleventyConfig.addTemplateFormats("11ty.ts,11ty.tsx");
+  eleventyConfig.addWatchTarget("./components/");
 
   return {
     dir: {
