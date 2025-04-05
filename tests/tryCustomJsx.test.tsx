@@ -23,5 +23,5 @@ test("See if this.jsxToString is actually passed down", async () => {
   const html = await jsxToString.call(context, jsx);
   document.body.innerHTML = html;
   const newHtml = document.body.innerHTML;
-  expect(newHtml).toEqual("<h1>Hello</h1>");
+  expect(newHtml).toEqual("<main><h1>Hello $99</h1></main>");
 });
